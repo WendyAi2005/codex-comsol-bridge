@@ -1,0 +1,20 @@
+# COMSOL/MATLAB run artifacts and proprietary model data
+runs/
+results/
+models/
+backups/
+tools/
+*.mph
+*.mat
+*.log
+matlab_diary.txt
+error_report.txt
+
+# Temporary and editor files
+*.tmp
+*.bak
+*~
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

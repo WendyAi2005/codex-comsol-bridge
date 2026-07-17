@@ -1,0 +1,4 @@
+interface:
+  display_name: "COMSOL MATLAB Simulation"
+  short_description: "Automate, debug, and observe COMSOL LiveLink models"
+  default_prompt: "Use $comsol-matlab-sim to build, run, debug, observe with optional COMSOL Desktop visual mode, and document a reproducible COMSOL LiveLink for MATLAB simulation."
