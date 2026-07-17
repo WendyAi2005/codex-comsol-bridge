@@ -5,7 +5,7 @@
 Codex reads `AGENTS.md` from the opened project and applicable parent
 directories. Folder inheritance is environment-dependent; do not assume a new
 folder automatically inherits a particular parent file. Install the user-level
-`comsol-matlab-sim` skill so it remains available when a completely unrelated
+`codex-comsol-bridge` skill so it remains available when a completely unrelated
 folder is opened as a new project.
 
 Create a project-specific `AGENTS.md` only when the project needs additional
@@ -28,7 +28,7 @@ project/
 ## Bootstrap sequence
 
 1. Read inherited and project `AGENTS.md` files.
-2. Load the global `comsol-matlab-sim` skill.
+2. Load the global `codex-comsol-bridge` skill.
 3. Create the project structure without deleting existing content.
 4. Inventory existing `.mph`, `.m`, `.mat`, logs, and exported model files.
 5. Run a minimal MCP connection test; do not open a large model yet.

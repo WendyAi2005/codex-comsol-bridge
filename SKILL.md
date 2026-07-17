@@ -1,9 +1,35 @@
 ---
-name: comsol-matlab-sim
-description: Use for every COMSOL Multiphysics, COMSOL with MATLAB, or LiveLink for MATLAB task, including Server connection, mphstart, mphopen, mphsave, mphlaunch, .mph models, MATLAB model files, geometry, materials, physics, named selections, meshing, studies, solvers, sweeps, result export, error diagnosis, native Desktop observation, verified manual checkpoints, before/after model diff, retry, and portable simulation-project setup. 适用于所有 COMSOL 自动化新项目及 AC/DC、Structural Mechanics、CFD、流固耦合、旋转机械磁场、接触和屈曲任务。
+name: codex-comsol-bridge
+description: >
+  Use this skill for Codex-to-COMSOL automation through MathWorks MATLAB MCP
+  Server and COMSOL LiveLink for MATLAB. It connects two mature, officially
+  supported integration paths into one community-built workflow with native
+  COMSOL model access, task-level local execution, compact result return,
+  same-server Desktop observation, verified human takeover, model-difference
+  review, safe resume, parameter sweeps and reproducible outputs.
 ---
 
-# COMSOL with MATLAB automation
+# Codex–COMSOL Bridge operating procedure
+
+## Architecture contract
+
+Use this fixed chain:
+
+Codex
+→ MathWorks MATLAB MCP Server
+→ MATLAB
+→ COMSOL LiveLink for MATLAB
+→ COMSOL Multiphysics Server
+→ native COMSOL model, physics interfaces and solvers
+
+This is a community-built workflow using officially supported integration
+layers.
+
+Do not insert a third-party COMSOL API wrapper between MATLAB and COMSOL
+unless the user explicitly requests an alternative architecture.
+
+The AI layer must not replace or approximate COMSOL physics. Numerical
+solutions remain the responsibility of the native COMSOL model and solvers.
 
 Use this skill as the default operating procedure for all COMSOL projects.
 Treat the rules as reusable unless a project-specific `AGENTS.md` explicitly
@@ -341,8 +367,9 @@ ran the script and the expected result files exist.
 - Keep `mliPath`, `serverHost`, `serverPort`, `visualMode`, model paths, and
   version expectations in configuration.
 - Install the reusable copy under
-  `%USERPROFILE%\.codex\skills\comsol-matlab-sim`; keep a project source or
-  override under `.agents/skills/comsol-matlab-sim` when needed.
+  `%USERPROFILE%\.codex\skills\codex-comsol-bridge\`; keep a project source
+  or override under `<project>\.agents\skills\codex-comsol-bridge\` when
+  needed.
 - On a new machine, validate MATLAB MCP first, then LiveLink connection, exact
   Desktop model attachment, one small baseline, and fresh-session reopen/readback
   before a sweep or long solve.

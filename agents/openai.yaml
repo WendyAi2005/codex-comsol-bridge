@@ -1,4 +1,4 @@
 interface:
-  display_name: "COMSOL MATLAB Simulation"
-  short_description: "Automate, debug, and observe COMSOL LiveLink models"
-  default_prompt: "Use $comsol-matlab-sim to build, run, debug, observe with optional COMSOL Desktop visual mode, and document a reproducible COMSOL LiveLink for MATLAB simulation."
+  display_name: "Codex–COMSOL Bridge"
+  short_description: "Connect Codex to native COMSOL APIs through MATLAB MCP and LiveLink"
+  default_prompt: "Use $codex-comsol-bridge to control COMSOL through MathWorks MATLAB MCP Server and COMSOL LiveLink for MATLAB, with task-level local execution, compact result return, same-server Desktop observation, verified manual checkpoints, model-difference review, safe resume, and reproducible outputs."

@@ -24,13 +24,13 @@ physics, units, material data, dimensions, boundary conditions, or Study type.
 Recommended user-level installation / 推荐用户级安装：
 
 ```text
-%USERPROFILE%\.codex\skills\comsol-matlab-sim\
+%USERPROFILE%\.codex\skills\codex-comsol-bridge\
 ```
 
 Project source or override / 项目源副本或项目级覆盖：
 
 ```text
-<project>\.agents\skills\comsol-matlab-sim\
+<project>\.agents\skills\codex-comsol-bridge\
 ```
 
 Add a short project `AGENTS.md` rule requiring this skill for every COMSOL,
