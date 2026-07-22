@@ -50,6 +50,23 @@ Read when relevant:
   creating or inheriting a new project.
 - [references/README_docs.md](references/README_docs.md) when researching an
   unfamiliar API, physics interface, feature type, or result expression.
+- [references/result_diagnostics.md](references/result_diagnostics.md) when a
+  solved result violates symmetry, conservation, sign, scale, monotonicity, or
+  mesh-convergence expectations.
+- [references/nonlinear_contact_diagnostics.md](references/nonlinear_contact_diagnostics.md)
+  before retrying post-buckling contact, snap-through, impact, or a failed
+  stationary continuation.
+- [references/progress_and_convergence_monitoring.md](references/progress_and_convergence_monitoring.md)
+  before any long, nonlinear-contact, time-dependent, or monitored solve.
+- [references/restart_from_zero_workflow.md](references/restart_from_zero_workflow.md)
+  when restarting a confused project, inheriting a long model history, or
+  deliberately rebuilding a simulation from first principles.
+- [references/failure_patterns.md](references/failure_patterns.md) when a run
+  fails, a result looks suspicious, or the workflow starts repeating actions
+  without producing new evidence.
+- Any project-specific `references/project_*.md` named by the project
+  `AGENTS.md` or current task. Keep those assumptions out of the reusable
+  public skill.
 - [references/visual_mode.md](references/visual_mode.md) when the user wants a
   native COMSOL Desktop attached to the same server model through `mphlaunch`.
 - [references/operator_guide_bilingual.md](references/operator_guide_bilingual.md)
@@ -262,7 +279,34 @@ conditions, study type, or coupling direction.
 
 Before a long solve or parameter sweep, report the number of cases, parameter
 ranges, expected outputs, and save location. Run one baseline case before any
-formal sweep.
+formal sweep. Configure a run-local `progress.log`, an independent read-only
+progress monitor, native convergence plots, bounded checkpoints, and a verified
+cancellation route as specified in
+[references/progress_and_convergence_monitoring.md](references/progress_and_convergence_monitoring.md).
+Never treat MATLAB exit alone as proof that a Server-side solve stopped.
+
+## Restart a project cleanly
+
+When the user wants to start over, do not delete, overwrite, or silently reuse
+the old model. Treat prior runs as read-only evidence and open a new lineage.
+Follow [references/restart_from_zero_workflow.md](references/restart_from_zero_workflow.md):
+
+1. Write a one-page physical contract and stage tree before touching COMSOL.
+2. Establish one machine-readable parameter source and record its revision and
+   hash in every run.
+3. Re-audit CAD scale, coordinate frames, geometry identity, selections,
+   initial gaps, and intended motion before adding physics.
+4. Build one physical question per checkpoint and stop for user review after
+   each checkpoint when requested.
+5. Do not initialize from an old solution unless its physics, variables,
+   contact formulation, and reference state are explicitly accepted.
+6. Separate numerical diagnostics from paper/device results. A converged
+   diagnostic is not automatically a physically meaningful result.
+
+If the workflow begins repeating mesh changes, step bisection, unit rewrites,
+or solver retries without a new falsifiable hypothesis, stop. Freeze the last
+evidence, render the geometry/field discrepancy, and ask one bounded physical
+question instead of starting another solve.
 
 ## Build in validated stages
 
@@ -279,6 +323,45 @@ formal sweep.
     at least one stored result before calling the workflow reusable.
 11. Add complexity one feature at a time: sweep, nonlinearity, contact,
     rotation, multiphysics coupling, or moving mesh.
+
+## Diagnose suspicious results before refining
+
+Do not respond to a questionable derived result by repeatedly refining the
+whole mesh. Follow the evidence ladder in
+[`references/result_diagnostics.md`](references/result_diagnostics.md):
+
+1. Freeze the current successful model, solution, mesh statistics, and result.
+2. Check selections, coordinates, units, signs, boundary conditions, and
+   expected physical invariants.
+3. Render field plots with coordinate axes, geometry context, and the derived
+   vector or integral overlaid. Distinguish a static angle snapshot from a
+   transient solution.
+4. Compare field convergence separately from derived-integral convergence.
+5. Isolate one source, body, or result operator at a time while preserving the
+   same geometry and mesh whenever possible.
+6. Cross-check with a physically equivalent evaluator, such as an auxiliary
+   integration surface, virtual work, energy difference, or conservation
+   balance, using only API-verified expressions.
+7. Refine only the region and element direction implicated by the evidence.
+
+Request human interpretation when assembly orientation, polarity, contact
+state, or intended motion cannot be resolved from artifacts. Provide the exact
+image, coordinate convention, expected behavior, observed discrepancy, and a
+specific question. Human visual review does not authorize GUI edits; use the
+verified checkpoint protocol before any manual model change.
+
+Before comparing meshes, verify that the coarsest model reaches the physical
+event being compared. Zero contact, no snap-through, a missing flux path, or an
+inactive load is a reference-state/model-definition issue, not evidence that a
+medium or fine mesh should be run.
+
+For post-buckling contact, treat repeated stationary NaN/Inf failures after
+first contact as possible loss of a static equilibrium branch. Do not keep
+bisecting or globally refining. Preserve the last valid state, render pressure
+and gap, localize failed degrees of freedom, try at most one evidence-based
+midpoint, then assess whether a Time Dependent formulation is physically
+required. Never label the maximum computed pressure as an optimal
+triboelectric workpoint without pressure-to-charge and durability calibration.
 
 ## Selection and material rules
 
@@ -305,6 +388,8 @@ formal sweep.
   only after confirming they exist or creating them explicitly.
 - Print major progress with `fprintf`.
 - Create a new `runs/YYYYMMDD_HHMMSS[_label]/` directory for every attempt.
+- For long runs, save `progress.log`, enable verified convergence plots, and
+  checkpoint restartable blocks before increasing solve length.
 - Never overwrite an original or successful `.mph` file.
 - Save on success:
   - `matlab_diary.txt`

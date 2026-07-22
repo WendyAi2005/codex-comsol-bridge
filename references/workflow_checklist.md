@@ -21,6 +21,12 @@
 
 ## Simulation contract
 
+- [ ] If restarting, old runs/models were frozen and classified instead of
+      overwritten or silently reused.
+- [ ] A physical stage tree with one question, inputs, outputs, pass criteria,
+      and stop conditions per checkpoint was written before model changes.
+- [ ] One machine-readable parameter source exists; its revision and hash will
+      be copied into each run.
 - [ ] Objective and quantities of interest are explicit.
 - [ ] Geometry source, dimensions, and coordinate system are explicit.
 - [ ] Parameters carry units where applicable.
@@ -29,7 +35,10 @@
 - [ ] Domains, boundaries, loads, inlets/outlets, and constraints are explicit.
 - [ ] Mesh strategy and study type are explicit.
 - [ ] Output data, plots, model name, and save location are explicit.
-- [ ] Long-run case count, ranges, outputs, and location were reported first.
+- [ ] Long-run case count, ranges, outputs, checkpoint cadence, time budget,
+  cancellation route, and location were reported first.
+- [ ] `progress.log`, a read-only human monitor, and verified convergence plots
+  are configured before submitting the solve.
 
 ## API evidence
 
@@ -53,7 +62,11 @@
 ## Run and verify
 
 - [ ] A new timestamped run directory was created for this attempt.
-- [ ] Diary and progress output are active.
+- [ ] Diary and run-local `progress.log` are active and changing as expected.
+- [ ] Long work is split into measured, restartable blocks with a saved `.mph`
+  and last accepted state after every block.
+- [ ] A requested stop was verified at the Server/solve level; MATLAB exit was
+  not used as the sole stop signal.
 - [ ] Solver completed and warnings were inspected.
 - [ ] Results passed physical sanity or analytical checks where possible.
 - [ ] `.mph`, workspace, report, data, and plots were saved.
@@ -68,6 +81,31 @@
       message, and exact model tag all confirm `PAUSED/safeToEdit=true`.
 - [ ] The user was not asked to type launcher variables or create continue
       flags.
+
+## Suspicious-result triage
+
+- [ ] The proposed retry states a falsifiable hypothesis, one testing change,
+      confirming/rejecting evidence, and a stop condition.
+- [ ] The same failure class has not already repeated twice without a user
+      checkpoint.
+- [ ] The violated physical expectation was stated explicitly.
+- [ ] The successful model, solution, mesh statistics, and result were
+      preserved before any diagnostic change.
+- [ ] Field convergence was separated from derived-integral convergence.
+- [ ] A diagnostic plot showed geometry, axes, units, and the questionable
+      vector or integral.
+- [ ] Static, parametric, frequency-domain, and transient results were labeled
+      accurately.
+- [ ] One source, body, mesh region, or result operator was changed at a time.
+- [ ] A symmetry, conservation, reaction, energy, or alternative-evaluator
+      cross-check was attempted before broad mesh refinement.
+- [ ] Any human-review request included the exact artifact, coordinate frame,
+      expected behavior, discrepancy, and one bounded question.
+- [ ] Human visual review was not treated as GUI-edit authorization.
+- [ ] Mesh refinement was targeted to the region and element direction
+      implicated by evidence.
+- [ ] The coarse model reaches the event being compared before medium/fine
+      meshes are authorized.
 - [ ] Pre/post-edit snapshots and `.mph` copies were saved in the run.
 - [ ] `manual_change_report.md/.json` was reviewed and ambiguous settings were
       checked with targeted COMSOL API queries.
@@ -75,6 +113,14 @@
 - [ ] If the launch MCP call timed out with the GUI open, completion was
       verified from the diary, responsive process, exact client tag, and a
       fresh-session parameter readback; the GUI was not force-terminated.
+- [ ] Contact area was reported with pressure-threshold sensitivity; a raw
+      `pressure > 0` integral was not accepted without a numerical-noise audit.
+- [ ] Undefined mapped-gap samples were counted and the finite subset was
+      reported explicitly.
+- [ ] After a post-contact stationary failure, at most one evidence-based
+      midpoint was attempted before reassessing static-branch stability.
+- [ ] Any stationary-to-transient change checked contact auxiliary-variable
+      compatibility with the selected initial solution.
 
 ## Closeout
 

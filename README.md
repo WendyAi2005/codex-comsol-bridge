@@ -263,6 +263,17 @@ The workflow also adds a research-oriented control layer:
     machine while keeping the automation, safety and recovery workflow
     reusable.
 
+11. **Observable and stoppable long solves / 长算例可观察且可停止**
+    Use a run-local `progress.log`, an independent read-only monitor window,
+    native COMSOL convergence plots, and restartable checkpoints. Never treat
+    MATLAB exit alone as proof that a submitted Server solve stopped.
+
+12. **Clean restart and anti-repetition / 干净重启与防重复**
+    Freeze old runs as read-only evidence, rebuild from a written physical
+    contract and verified geometry reference state, and stop repeated mesh,
+    step, unit, or solver changes unless each retry tests a new falsifiable
+    hypothesis. Numerical diagnostics remain separate from device claims.
+
 ## Validated environment / 已验证环境
 
 - Windows
@@ -284,6 +295,8 @@ machine and verify version compatibility before long solves.
 5. Configure the MLI path, Server host and port.
 6. Ask Codex to use `$codex-comsol-bridge`.
 7. Run one small baseline before a sweep or long solve.
+8. Before a long solve, configure `progress.log`, convergence plots,
+   checkpoints, and a verified cancellation route.
 
 中文：
 
@@ -294,6 +307,7 @@ machine and verify version compatibility before long solves.
 5. 配置mli路径、Server地址和端口；
 6. 要求Codex调用`$codex-comsol-bridge`；
 7. 参数扫描或长时间求解前先运行一个小型基准工况。
+8. 长算例开始前配置`progress.log`、收敛图、分块检查点和已验证的停止路径。
 
 ## Installation / 安装
 
@@ -378,6 +392,11 @@ Important references:
 - [`workflow_checklist.md`](references/workflow_checklist.md)
 - [`validated_baselines.md`](references/validated_baselines.md)
 - [`new_project_workflow.md`](references/new_project_workflow.md)
+- [`restart_from_zero_workflow.md`](references/restart_from_zero_workflow.md)
+- [`failure_patterns.md`](references/failure_patterns.md)
+- [`result_diagnostics.md`](references/result_diagnostics.md)
+- [`nonlinear_contact_diagnostics.md`](references/nonlinear_contact_diagnostics.md)
+- [`progress_and_convergence_monitoring.md`](references/progress_and_convergence_monitoring.md)
 - [`portability_and_publishing.md`](references/portability_and_publishing.md)
 - [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - [`BENCHMARK.md`](BENCHMARK.md)

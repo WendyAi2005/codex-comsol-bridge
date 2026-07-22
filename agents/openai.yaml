@@ -1,4 +1,4 @@
 interface:
-  display_name: "Codex–COMSOL Bridge"
-  short_description: "Connect Codex to native COMSOL APIs through MATLAB MCP and LiveLink"
-  default_prompt: "Use $codex-comsol-bridge to control COMSOL through MathWorks MATLAB MCP Server and COMSOL LiveLink for MATLAB, with task-level local execution, compact result return, same-server Desktop observation, verified manual checkpoints, model-difference review, safe resume, and reproducible outputs."
+  display_name: "Codex-COMSOL Bridge"
+  short_description: "Safe MATLAB MCP and LiveLink automation for COMSOL"
+  default_prompt: "Use $codex-comsol-bridge to rebuild or automate a COMSOL model through MATLAB MCP and LiveLink with evidence-based checkpoints, observable solves, and reproducible outputs."

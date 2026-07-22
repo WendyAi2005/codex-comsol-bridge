@@ -114,3 +114,69 @@ Validated on 2026-07-17 without solving or overwriting a source model:
   access and is filtered as volatile.
 - COMSOL M-file export can be incomplete when model history is disabled; use
   the structured snapshot plus targeted queries as primary evidence.
+
+## Codex–COMSOL Bridge local replacement regression
+
+Validated on 2026-07-18 after replacing both the user-level and project-level
+skills with `codex-comsol-bridge`:
+
+- Baseline run: `runs/20260718_001618_structural_cantilever_new_skill`.
+- MATLAB MCP connected to `localhost:2036`; no second MATLAB or Server was
+  started.
+- One 3D linear-elastic cantilever case solved in 7.301 s.
+- Maximum displacement: 0.002006962259961058 m.
+- Tip-center displacement: 0.002001204271869751 m.
+- Maximum von Mises stress: 64945504.38433591 Pa.
+- Beam-theory tip difference: 0.0602135934875707%.
+- Fresh-session verification:
+  `runs/20260718_001817_structural_reopen_verification`.
+- Reopen confirmed physics tag `solid` and reproduced maximum displacement
+  with relative difference `1.080441016869486e-15`.
+- The saved model was not overwritten. Final SHA-256:
+  `02D631E699E9619B863C4539F4328AA9BC25E2F5E5C60ECF0A776CEC1D11496A`.
+- `visualMode=false` was used for this deterministic regression run.
+
+## Symmetry-led permanent-magnet force diagnostic
+
+Validated on 2026-07-18 with MATLAB R2022b, COMSOL Server 5.6, LiveLink for
+MATLAB, and a stored 3D Magnetic Fields, No Currents solution:
+
+- A body-surface Maxwell-stress result showed a symmetry-forbidden lateral
+  force above 10% of the main attractive component.
+- Orthogonal field-line plots showed a visually symmetric primary field.
+- Re-solving one bounded case with only the local three-source group enabled
+  left the erroneous body-surface lateral components nearly unchanged, so the
+  other sources were not the cause.
+- Symmetric closed-cuboid Maxwell-stress probes in air reduced the lateral
+  ratio below 1% while preserving the main attractive force within the
+  diagnostic convergence band.
+- Probe offset and quadrature order were varied independently; a fresh MATLAB
+  MCP session reopened the saved model and reproduced the reusable function's
+  force result to floating-point precision without solving again.
+- This validates the diagnostic method, not a universal probe dimension or a
+  publication acceptance threshold. Each project must scan probe offset and
+  quadrature order and cross-check representative cases with energy or virtual
+  work.
+
+Reusable implementation:
+`scripts/evaluate_maxwell_force_probe.m`.
+
+## COMSOL 5.6 transient-contact API evidence
+
+Validated read-only on 2026-07-19:
+
+- `Structural_Mechanics_Module\Verification_Examples\ring_impact.mph`
+  confirms `Transient`, generalized-alpha, `PenaltyDynamic`, and
+  `AugmentedLagrangeDynamic` APIs.
+- `Structural_Mechanics_Module\Contact_and_Friction\transient_rolling_contact.mph`
+  confirms that a Time Dependent study can retain `AugmentedLagrange` and use
+  generalized-alpha integration.
+- The local ShellContact allowed-value query returned `Penalty`,
+  `PenaltyDynamic`, `AugmentedLagrange`, and `AugmentedLagrangeDynamic`.
+- Changing an already solved stationary model to
+  `AugmentedLagrangeDynamic` can change contact auxiliary variables and make
+  the stationary solution fail during transient initial-value merging. Method
+  availability does not prove seed compatibility.
+
+Evidence: `runs/20260719_184500_comsol56_official_transient_contact_api_audit`
+and `runs/20260719_185000_stage4_shell_dynamic_contact_allowed_values_audit`.
